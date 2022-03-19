@@ -28,7 +28,7 @@ def get_recipe(recipe_id):
 
 # despite the same "route", this is a POST method and not a GET method
 @app.route('/recipes', methods= ['POST'])
-def post_recipe():
+def create_recipe():
     data = request.get_json()
     name = data.get('name')
     description = data.get('description')
@@ -67,5 +67,5 @@ recipes = [{
 {
     'id':2,
     'name': 'Tomato Pasta',
-    'description': "This is a lovely Tomato Pasta Receipe"
+    'description': 'This is a lovely Tomato Pasta Receipe'
 }]
