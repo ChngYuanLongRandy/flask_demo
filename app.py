@@ -2,6 +2,7 @@
 # as changing the content type of our HTTP response to application/JSON
 
 # request will take care of incoming requests
+from crypt import methods
 from flask import Flask, jsonify, request
 
 # HTTPstatus informs us of the different HTTPstatuses like httpstatus.created(201)
@@ -43,7 +44,7 @@ def create_recipe():
     return jsonify(recipe), HTTPStatus.CREATED
 
 @app.route('/recipes/<int:recipe_id>', methods=['PUT'])
-def update_recipe():
+def update_recipe(recipe_id):
     recipe = next((recipe for recipe in recipes if recipes['id']== recipe_id), None)
     if not recipe:
         return jsonify({'message':'Recipe not found'}), HTTPStatus.NOT_FOUND
@@ -54,6 +55,14 @@ def update_recipe():
     })
     return jsonify(recipe), HTTPStatus.OK
 
+@app.route('/recipes/<int:recipe_id>', methods=['DELETE'])
+def delete_recipe(recipe_id):
+    recipe = next((recipe for recipe in recipes if recipes['id']== recipe_id), None)
+    if not recipe:
+        return jsonify({'message':'Recipe not found'}), HTTPStatus.NOT_FOUND
+    recipes.remove(recipe)
+
+    return '', HTTPStatus.NO_CONTENT
 
 if __name__ == "__main__":
     app.run()
