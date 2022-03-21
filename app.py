@@ -2,7 +2,6 @@
 # as changing the content type of our HTTP response to application/JSON
 
 # request will take care of incoming requests
-from crypt import methods
 from flask import Flask, jsonify, request
 
 # HTTPstatus informs us of the different HTTPstatuses like httpstatus.created(201)
@@ -22,7 +21,7 @@ def get_recipes():
 
 @app.route("/recipes/<int:recipe_id>",methods=['GET'])
 def get_recipe(recipe_id):
-    recipe = next((recipe for recipe in recipes if recipes['id']==recipe_id), None)
+    recipe = next((recipe for recipe in recipes if recipe['id'] == recipe_id), None)
     if recipe:
         return jsonify(recipe)
     return jsonify({'message':'recipe not found'}), HTTPStatus.NOT_FOUND 
@@ -45,9 +44,10 @@ def create_recipe():
 
 @app.route('/recipes/<int:recipe_id>', methods=['PUT'])
 def update_recipe(recipe_id):
-    recipe = next((recipe for recipe in recipes if recipes['id']== recipe_id), None)
+    recipe = next((recipe for recipe in recipes if recipe['id'] == recipe_id), None)
+
     if not recipe:
-        return jsonify({'message':'Recipe not found'}), HTTPStatus.NOT_FOUND
+        return jsonify({'message': 'recipe not found'}), HTTPStatus.NOT_FOUND
     data = request.get_json()
     recipe.update({
         'name' : data.get('name'),
@@ -57,9 +57,11 @@ def update_recipe(recipe_id):
 
 @app.route('/recipes/<int:recipe_id>', methods=['DELETE'])
 def delete_recipe(recipe_id):
-    recipe = next((recipe for recipe in recipes if recipes['id']== recipe_id), None)
+    recipe = next((recipe for recipe in recipes if recipe['id'] == recipe_id), None)
+
     if not recipe:
-        return jsonify({'message':'Recipe not found'}), HTTPStatus.NOT_FOUND
+        return jsonify({'message': 'recipe not found'}), HTTPStatus.NOT_FOUND
+
     recipes.remove(recipe)
 
     return '', HTTPStatus.NO_CONTENT
